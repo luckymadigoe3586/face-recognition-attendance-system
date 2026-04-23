@@ -1,5 +1,7 @@
 using Attendance.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Attendance.Core.Interfaces;
+using Attendance.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 builder.Services.AddCors(options =>
 {
