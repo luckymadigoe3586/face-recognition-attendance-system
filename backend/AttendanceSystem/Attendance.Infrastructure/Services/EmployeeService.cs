@@ -20,6 +20,29 @@ namespace Attendance.Infrastructure.Services
             _context = context;
         }
 
+        public async Task<EmployeeDto?> UploadFaceImageAsync(int employeeId, string imagePath)
+        {
+            var employee = await _context.Employees.FindAsync(employeeId);
+
+            if (employee == null)
+                return null;
+
+            employee.FaceImagePath = imagePath;
+
+            await _context.SaveChangesAsync();
+
+            return new EmployeeDto
+            {
+                EmployeeId = employee.EmployeeId,
+                FullName = employee.FullName,
+                Email = employee.Email,
+                Department = employee.Department,
+                RegistrationNumber = employee.RegistrationNumber,
+                FaceImagePath = employee.FaceImagePath,
+                CreatedAt = employee.CreatedAt
+            };
+        }
+
         public async Task<EmployeeDto> CreateEmployeeAsync(CreateEmployeeDto dto)
         {
             var emailExists = await _context.Employees.AnyAsync(e => e.Email == dto.Email);
@@ -35,7 +58,9 @@ namespace Attendance.Infrastructure.Services
                 FullName = dto.FullName,
                 Email = dto.Email,
                 Department = dto.Department,
-                RegistrationNumber = dto.RegistrationNumber
+                RegistrationNumber = dto.RegistrationNumber,
+                
+
             };
 
             _context.Employees.Add(employee);
@@ -47,7 +72,9 @@ namespace Attendance.Infrastructure.Services
                 FullName = employee.FullName,
                 Email = employee.Email,
                 Department = employee.Department,
+                FaceImagePath = employee.FaceImagePath,
                 RegistrationNumber = employee.RegistrationNumber,
+
                 CreatedAt = employee.CreatedAt
             };
         }
@@ -62,6 +89,7 @@ namespace Attendance.Infrastructure.Services
                     Email = e.Email,
                     Department = e.Department,
                     RegistrationNumber = e.RegistrationNumber,
+                    FaceImagePath = e.FaceImagePath,
                     CreatedAt = e.CreatedAt
                 })
                 .ToListAsync();
@@ -81,6 +109,7 @@ namespace Attendance.Infrastructure.Services
                 Email = employee.Email,
                 Department = employee.Department,
                 RegistrationNumber = employee.RegistrationNumber,
+                FaceImagePath = employee.FaceImagePath,
                 CreatedAt = employee.CreatedAt
             };
         }
@@ -106,6 +135,7 @@ namespace Attendance.Infrastructure.Services
                 Email = employee.Email,
                 Department = employee.Department,
                 RegistrationNumber = employee.RegistrationNumber,
+                FaceImagePath = employee.FaceImagePath,
                 CreatedAt = employee.CreatedAt
             };
         }

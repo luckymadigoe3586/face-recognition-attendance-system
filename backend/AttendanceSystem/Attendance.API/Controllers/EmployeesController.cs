@@ -15,6 +15,46 @@ namespace Attendance.API.Controllers
             _employeeService = employeeService;
         }
 
+        [HttpPost("{id}/upload-face")]
+        public async Task<IActionResult> UploadFaceImage(int id, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest(new { message = "No image file uploaded." });
+
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+            var extension = Path.GetExtension(file.FileName).ToLower();
+
+            if (!allowedExtensions.Contains(extension))
+                return BadRequest(new { message = "Only JPG, JPEG, and PNG files are allowed." });
+
+            var fileName = $"employee_{id}_{Guid.NewGuid()}{extension}";
+
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "faces");
+
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
+
+            var filePath = Path.Combine(folderPath, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            var imagePath = $"/faces/{fileName}";
+
+            var updatedEmployee = await _employeeService.UploadFaceImageAsync(id, imagePath);
+
+            if (updatedEmployee == null)
+                return NotFound(new { message = "Employee not found." });
+
+            return Ok(new
+            {
+                message = "Face image uploaded successfully.",
+                employee = updatedEmployee
+            });
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeDto dto)
         {

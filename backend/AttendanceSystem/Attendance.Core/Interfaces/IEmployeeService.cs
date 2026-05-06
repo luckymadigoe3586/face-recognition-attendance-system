@@ -14,5 +14,6 @@ namespace Attendance.Core.Interfaces
         Task<EmployeeDto?> GetEmployeeByIdAsync(int id);
         Task<EmployeeDto?> UpdateEmployeeAsync(int id, UpdateEmployeeDto dto);
         Task<bool> DeleteEmployeeAsync(int id);
+        Task<EmployeeDto?> UploadFaceImageAsync(int employeeId, string imagePath);
     }
 }

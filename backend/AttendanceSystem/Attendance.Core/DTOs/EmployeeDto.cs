@@ -13,6 +13,7 @@ namespace Attendance.Core.DTOs
         public string Email { get; set; } = string.Empty;
         public string Department { get; set; } = string.Empty;
         public string RegistrationNumber { get; set; } = string.Empty;
+        public string FaceImagePath { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
     }
 }

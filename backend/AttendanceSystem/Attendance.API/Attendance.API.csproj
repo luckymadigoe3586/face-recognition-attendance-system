@@ -23,6 +23,7 @@
   <ItemGroup>
     <Folder Include="Configurations\" />
     <Folder Include="Middleware\" />
+    <Folder Include="wwwroot\faces\" />
   </ItemGroup>
 
 </Project>
